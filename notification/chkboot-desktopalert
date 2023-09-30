@@ -11,11 +11,15 @@ chgfile=${CHKBOOT_DATA}/${CHANGES_ALERT}
 
 XMESSAGE=/usr/bin/xmessage
 ZENITY=/usr/bin/zenity
+KDIALOG=/usr/bin/kdialog
+ALERT="ALERT: Boot changes"
 NOTIFICATION="This notification will continue to appear until you either run chkboot again as root or restart your computer"
 
 if [ -s $chgfile ]; then
-    if [ -x $ZENITY ]; then
-        cat $chgfile | $ZENITY --title "ALERT: Boot changes" --text-info --width 550 --height 300
+    if [ -x $KDIALOG ]; then
+        cat $chgfile | $KDIALOG --title "$ALERT" -textbox -
+    elif [ -x $ZENITY ]; then
+        cat $chgfile | $ZENITY --title "$ALERT" --text-info --width 550 --height 300
         $ZENITY --title "chkboot" --info --text="$NOTIFICATION"
     elif [ -x $XMESSAGE ]; then
         cat $chgfile | $XMESSAGE -default okay -file -
